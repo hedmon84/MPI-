@@ -75,7 +75,7 @@ void multiply()
         {
             data += A[i][j] * x[j];
         }
-        MPI_Send(&data, 8, MPI_DOUBLE, i + 1, 0, MPI_COMM_WORLD); //el cero se los manda a los demas
+        MPI_Send(&data, 8, MPI_DOUBLE, i + 1, 0, MPI_COMM_WORLD);
     }
 }
 
@@ -90,7 +90,7 @@ void process(int my_rank, int size)
     else
     {
 
-        MPI_Recv(&data, 8, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE); // los demas lo reciben del cero
+        MPI_Recv(&data, 8, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         printf("result=%lf\n", data);
     }
 }
