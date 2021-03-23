@@ -13,17 +13,16 @@ run exect:mpiexec -n 4 ./matriz_vector_pmi
 int **A;
 int *x;
 int *y;
-int dimension = 4;
+int dimension = 5;
 double data;
+int size;
+int my_rank;
 void create_arrays();
 
 void process(int my_rank, int size);
 
 int main(void)
 {
-
-    int size;
-    int my_rank;
 
     // manda parametros del main
     MPI_Init(NULL, NULL);
@@ -68,14 +67,14 @@ void create_arrays()
 
 void multiply()
 {
-    for (int i = 0; i < dimension; i++)
+    for (int i = 1; i < size; i++)
     {
         data = 0;
         for (int j = 0; j < dimension; j++)
         {
             data += A[i][j] * x[j];
         }
-        MPI_Send(&data, 8, MPI_DOUBLE, i + 1, 0, MPI_COMM_WORLD);
+        MPI_Send(&data, 1, MPI_DOUBLE, i, 0, MPI_COMM_WORLD); //el cero se los manda a los demas
     }
 }
 
@@ -90,7 +89,7 @@ void process(int my_rank, int size)
     else
     {
 
-        MPI_Recv(&data, 8, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        MPI_Recv(&data, 1, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE); // los demas lo reciben del cero
         printf("result=%lf\n", data);
     }
 }
